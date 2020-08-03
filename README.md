@@ -1,2 +1,2 @@
 # dogInstagram
-AndroidX
+Android + Jetpack
