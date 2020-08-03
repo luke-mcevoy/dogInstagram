@@ -1,13 +1,11 @@
 package com.mcevoy.dogs.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
+import androidx.fragment.app.Fragment
 import com.mcevoy.dogs.R
-import kotlinx.android.synthetic.main.fragment_detail.*
 
 
 class DetailFragment : Fragment() {
@@ -27,12 +25,6 @@ class DetailFragment : Fragment() {
 
         arguments?.let {
             dogUuid = DetailFragmentArgs.fromBundle(it).dogUuid
-            textView2.text = dogUuid.toString()
-        }
-
-        buttonList.setOnClickListener {
-            val action = DetailFragmentDirections.actionListFragment()
-            Navigation.findNavController(it).navigate(action)
         }
     }
 }
