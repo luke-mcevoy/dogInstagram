@@ -7,17 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.mcevoy.dogs.R
 import com.mcevoy.dogs.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
-import kotlinx.android.synthetic.main.fragment_list.*
 
 
 class DetailFragment : Fragment() {
 
     private lateinit var viewModel: DetailViewModel
-    private val dogsListAdapter = DogsListAdapter(arrayListOf())
 
     private var dogUuid = 0
 

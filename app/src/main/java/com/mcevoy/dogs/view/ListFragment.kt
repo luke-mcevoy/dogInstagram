@@ -40,7 +40,7 @@ class ListFragment : Fragment() {
         observeViewModel()
     }
 
-    fun observeViewModel() {
+    private fun observeViewModel() {
         viewModel.dogs.observe(this, Observer {dogs ->
             dogs?.let {
                 dogsList.visibility = View.VISIBLE
