@@ -31,6 +31,7 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: DogViewHolder, position: Int) {
         holder.view.dog = dogsList[position]
+        
     }
 
     class DogViewHolder(var view: ItemDogBinding) : RecyclerView.ViewHolder(view.root)
