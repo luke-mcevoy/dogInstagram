@@ -13,7 +13,8 @@ import com.mcevoy.dogs.util.getProgressDrawable
 import com.mcevoy.dogs.util.loadImage
 import kotlinx.android.synthetic.main.item_dog.view.*
 
-class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<DogsListAdapter.DogViewHolder>() {
+class DogsListAdapter(private val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<DogsListAdapter.DogViewHolder>(),
+    DogClickListener {
 
     fun updateDogList(newDogsList: List<DogBreed>) {
         dogsList.clear()
@@ -31,7 +32,14 @@ class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: DogViewHolder, position: Int) {
         holder.view.dog = dogsList[position]
-        
+        holder.view.listener = this
+    }
+
+    override fun onDogClicked(view: View) {
+        val uuid = view.dogId.text.toString().toInt()
+        val action = ListFragmentDirections.actionDetailFragment()
+        action.dogUuid = uuid
+        Navigation.findNavController(view).navigate(action)
     }
 
     class DogViewHolder(var view: ItemDogBinding) : RecyclerView.ViewHolder(view.root)
