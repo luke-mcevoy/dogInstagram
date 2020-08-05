@@ -17,10 +17,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.mcevoy.dogs.R
 import com.mcevoy.dogs.databinding.FragmentDetailBinding
 import com.mcevoy.dogs.model.DogPalette
-import com.mcevoy.dogs.util.getProgressDrawable
-import com.mcevoy.dogs.util.loadImage
 import com.mcevoy.dogs.viewmodel.DetailViewModel
-import kotlinx.android.synthetic.main.fragment_detail.*
 
 
 class DetailFragment : Fragment() {

@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mcevoy.dogs.R
 import com.mcevoy.dogs.databinding.ItemDogBinding
 import com.mcevoy.dogs.model.DogBreed
-import com.mcevoy.dogs.util.getProgressDrawable
-import com.mcevoy.dogs.util.loadImage
 import kotlinx.android.synthetic.main.item_dog.view.*
 
 class DogsListAdapter(private val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<DogsListAdapter.DogViewHolder>(),
