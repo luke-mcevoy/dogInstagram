@@ -63,6 +63,8 @@ class DetailFragment : Fragment() {
         })
     }
 
+
+
     private fun setupBackgroundColor(url: String) {
         Glide.with(this)
             .asBitmap()
