@@ -31,15 +31,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun checkSMSPermission() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.SEND_SMS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.SEND_SMS
+                )
+            ) {
                 AlertDialog.Builder(this)
                     .setTitle("Send SMS permission")
                     .setMessage("This app requires access to send an SMS.")
-                    .setPositiveButton("Ask me") {dialog, which ->
+                    .setPositiveButton("Ask me") { dialog, which ->
                         requestSMSPermission()
                     }
-                    .setNegativeButton("No") {dialog, which ->
+                    .setNegativeButton("No") { dialog, which ->
                         notifyDetailFragment(false)
                     }
                     .show()
@@ -52,7 +60,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun requestSMSPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), PERMISSION_SEND_SMS)
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.SEND_SMS),
+            PERMISSION_SEND_SMS
+        )
     }
 
     override fun onRequestPermissionsResult(
@@ -61,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode) {
+        when (requestCode) {
             PERMISSION_SEND_SMS -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     notifyDetailFragment(true)
@@ -74,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun notifyDetailFragment(permissionGranted: Boolean) {
         val activeFragment = fragment.childFragmentManager.primaryNavigationFragment
-        if(activeFragment is DetailFragment) {
+        if (activeFragment is DetailFragment) {
             (activeFragment as DetailFragment).onPermissionsResult(permissionGranted)
         }
     }
