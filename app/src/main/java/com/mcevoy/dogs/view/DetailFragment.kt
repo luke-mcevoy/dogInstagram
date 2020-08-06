@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,7 +15,10 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.mcevoy.dogs.R
 import com.mcevoy.dogs.databinding.FragmentDetailBinding
+import com.mcevoy.dogs.databinding.SendSmsDialogBinding
+import com.mcevoy.dogs.model.DogBreed
 import com.mcevoy.dogs.model.DogPalette
+import com.mcevoy.dogs.model.SmsInfo
 import com.mcevoy.dogs.viewmodel.DetailViewModel
 
 
@@ -25,6 +29,7 @@ class DetailFragment : Fragment() {
 
     private lateinit var dataBinding: FragmentDetailBinding
     private var sendSmsStarted = false
+    private var currentDog: DogBreed? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +55,7 @@ class DetailFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.dogLiveData.observe(this, Observer { dog ->
+            currentDog = dog
             dog?.let {
                 dataBinding.dog = dog
 
@@ -64,12 +70,12 @@ class DetailFragment : Fragment() {
         Glide.with(this)
             .asBitmap()
             .load(url)
-            .into(object: CustomTarget<Bitmap>() {
+            .into(object : CustomTarget<Bitmap>() {
                 override fun onLoadCleared(placeholder: Drawable?) {}
 
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     Palette.from(resource)
-                        .generate{palette ->
+                        .generate { palette ->
                             val intColor = palette?.lightMutedSwatch?.rgb ?: 0
                             val myPalette = DogPalette(intColor)
                             dataBinding.palette = myPalette
@@ -85,7 +91,7 @@ class DetailFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.actions_send_sms -> {
                 sendSmsStarted = true
                 (activity as MainActivity).checkSMSPermission()
@@ -99,6 +105,38 @@ class DetailFragment : Fragment() {
     }
 
     fun onPermissionsResult(permissionGranted: Boolean) {
+        if (sendSmsStarted && permissionGranted) {
+            context?.let {
+                val smsInfo = SmsInfo(
+                    "",
+                    "${currentDog?.dogBreed} bred for ${currentDog?.bredFor}",
+                    currentDog?.imageUrl
+                )
+
+                val dialogBinding = DataBindingUtil.inflate<SendSmsDialogBinding>(
+                    LayoutInflater.from(it),
+                    R.layout.send_sms_dialog,
+                    null,
+                    false
+                )
+
+                AlertDialog.Builder(it)
+                    .setView(dialogBinding.root)
+                    .setPositiveButton("Send SMS") {dialog, which ->
+                        if(!dialogBinding.smsDestination.text.isNullOrBlank()) {
+                            smsInfo.to = dialogBinding.smsDestination.text.toString()
+                            sendSms(smsInfo)
+                        }
+                    }
+                    .setNegativeButton("Cancel") { dialog, which -> }
+                    .show()
+
+                dialogBinding.smsInfo = smsInfo
+            }
+        }
+    }
+
+    private fun sendSms(smsInfo: SmsInfo) {
 
     }
 
